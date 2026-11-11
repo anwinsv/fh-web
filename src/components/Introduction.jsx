@@ -1,94 +1,133 @@
 import React from 'react';
-import mascotSvg from '../assets/images/fh_mascot.svg';
 
 export default function Introduction() {
   return (
-    <section id="about" className="intro light min-h-screen">
-      <div className="wrap">
-        {/* Section Header Tag - Top border divider */}
-        <div className="lab">
-          <b>01</b>
-          <span>&lt;introduction&gt;</span>
+    <section id="about" className="intro light min-h-screen flex flex-col justify-between">
+      <div className="wrap flex flex-col justify-between flex-1 min-h-screen py-6 md:py-8 w-full">
+        {/* Top Header Tag & Hairline Divider */}
+        <div className="lab border-b border-[#c9bfb4] pb-3 flex items-baseline justify-between w-full">
+          <div className="flex items-center gap-3">
+            <b className="text-[#E5372A] font-medium text-base">01</b>
+            <span className="font-mono text-sm tracking-wider text-[#141414]">&lt;introduction&gt;</span>
+          </div>
         </div>
 
-        {/* 2-Column Content Grid: Vertically Centered */}
-        <div className="grid">
-          {/* Left Column: Kinetic Abstract Fiery Visual (Option B/C) */}
-          <div className="flex justify-center lg:justify-start">
-            <div className="relative w-full max-w-[380px] aspect-square bg-[#EFE1D3] border border-[#E0D3C5] overflow-hidden flex items-center justify-center p-8 group shadow-sm">
-              {/* Concentric kinetic rings rotating */}
-              <div className="absolute inset-4 rounded-full border border-[#E5372A]/20 animate-[spin_30s_linear_infinite]" />
-              <div className="absolute inset-12 rounded-full border border-dashed border-[#F36F21]/30 animate-[spin_20s_linear_infinite_reverse]" />
-              <div className="absolute inset-20 rounded-full border border-[#FDA83A]/40 animate-[spin_15s_linear_infinite]" />
+        {/* Upper breathing space to offset placeholder, heading, and description downward */}
+        <div className="flex-[1.8] min-h-[48px] max-h-[200px]" />
 
-              {/* Flame Symbol in center */}
-              <div className="relative z-10 flex flex-col items-center">
-                <img
-                  src={mascotSvg}
-                  alt="Flame Kinetic Graphic"
-                  className="w-24 sm:w-28 h-auto drop-shadow-[0_4px_16px_rgba(229,55,42,0.25)] transition-transform duration-300 group-hover:scale-110"
-                />
-                <span className="mt-4 font-mono text-xs uppercase tracking-widest text-[#E5372A] font-semibold">
-                  Creative Combustion
-                </span>
-              </div>
-
-              {/* Corner markers */}
-              <span className="absolute top-2 left-2 font-mono text-[10px] text-[#7A7067]">01//SPARK</span>
-              <span className="absolute bottom-2 right-2 font-mono text-[10px] text-[#7A7067]">FH//CORE</span>
+        {/* Middle Content Grid: 50% Placeholder Left / 50% Text Content Right */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-14 items-center w-full">
+          {/* Left Column (50%): Clean Square Placeholder Box */}
+          <div className="flex justify-center items-center w-full">
+            <div
+              className="ph select-none shadow-sm"
+              aria-hidden="true"
+              style={{
+                width: 'min(290px, 80%)',
+                aspectRatio: '1',
+                background: '#c8d1d9',
+                color: '#141414',
+                display: 'grid',
+                placeItems: 'center',
+                fontFamily: 'var(--label)',
+                fontSize: '16px',
+                borderRadius: '0px',
+              }}
+            >
+              placeholder
             </div>
           </div>
 
-          {/* Right Column: Statement & Copy - strictly using LT Wave (var(--text)) as in Claude HTML */}
-          <div className="flex flex-col gap-5 max-w-2xl">
+          {/* Right Column (50%): Single-line heading and 6-line description matching mockup */}
+          <div className="flex flex-col w-full max-w-2xl">
             <h2
-              className="text-3xl sm:text-4xl lg:text-[44px] font-semibold leading-[1.2] tracking-[-0.01em] text-[#F36F21]"
-              style={{ fontFamily: 'var(--text)' }}
+              className="font-bold text-[#F36F21]"
+              style={{
+                fontFamily: 'var(--text)',
+                fontSize: 'clamp(26px, 2.6vw, 38px)',
+                lineHeight: 1.15,
+                letterSpacing: '-0.01em',
+                whiteSpace: 'nowrap',
+              }}
             >
               Not every spark needs a matchstick.
             </h2>
 
-            <div
-              className="flex flex-col gap-4 text-lg sm:text-xl lg:text-[23px] text-[#141414] leading-[1.45] font-normal"
-              style={{ fontFamily: 'var(--text)' }}
+            {/* Description scaled up to match the mockup's 6 lines with rich medium weight */}
+            <p
+              className="mt-2.5 text-[#141414]"
+              style={{
+                fontFamily: 'var(--text)',
+                fontWeight: 500,
+                fontSize: 'clamp(21px, 2.1vw, 29px)',
+                lineHeight: 1.4,
+                letterSpacing: '-0.01em',
+              }}
             >
-              <p>
-                Sometimes, all it needs is a good idea and someone willing to run with it.
-              </p>
-              <p className="text-base sm:text-lg text-[#555] font-light leading-relaxed">
-                That's where we come in. We work with people and businesses to give their ideas a visual identity, a little personality and a reason to be remembered.
-              </p>
-            </div>
+              Sometimes, all it needs is a good idea and<br className="hidden md:inline" />
+              {' '}someone willing to run with it.<br className="hidden md:inline" />
+              That's where we come in. We work with<br className="hidden md:inline" />
+              {' '}people and businesses to give their ideas<br className="hidden md:inline" />
+              {' '}a visual identity, a little personality and a<br className="hidden md:inline" />
+              {' '}reason to be remembered.
+            </p>
           </div>
         </div>
 
-        {/* Bottom Section: Studio Metadata & Action Links */}
-        <div className="bot">
-          <div className="meta">
+        {/* Lower breathing space leading down into the bottom divider line */}
+        <div className="flex-1 min-h-[32px] max-h-[80px]" />
+
+        {/* Bottom Section: 50% Studio Metadata Left / 50% Action Buttons Right */}
+        <div className="bot border-t border-[#c9bfb4] pt-8 pb-4 md:pb-6 grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-14 items-end w-full">
+          {/* Metadata Block on Left (50%) */}
+          <div className="meta flex flex-col gap-3">
             <div>
-              <b>Based in</b>
-              <span>Kerala, India</span>
+              <b className="block text-[#141414] text-[16px] leading-tight" style={{ fontFamily: 'var(--text)', fontWeight: 600 }}>
+                Based in
+              </b>
+              <span className="block text-[#7A7067] text-[14px]" style={{ fontFamily: 'var(--label)' }}>
+                Kerala, India
+              </span>
             </div>
             <div>
-              <b>Powered by</b>
-              <span>Pixels, possibilities and plenty of brainstorming.</span>
+              <b className="block text-[#141414] text-[16px] leading-tight" style={{ fontFamily: 'var(--text)', fontWeight: 600 }}>
+                Powered by
+              </b>
+              <span className="block text-[#7A7067] text-[14px]" style={{ fontFamily: 'var(--label)' }}>
+                Pixels, possibilities and<br className="hidden sm:inline" /> plenty of brainstorming.
+              </span>
             </div>
           </div>
 
-          <div className="row">
+          {/* Action Buttons on Right (50%), aligned directly under the right text column */}
+          <div className="row flex flex-wrap gap-4 items-center">
             <a
               href="#about"
               className="btn btn-o"
-              style={{ color: 'var(--canvas)', borderColor: 'var(--canvas)' }}
+              style={{
+                color: 'var(--canvas)',
+                borderColor: 'var(--canvas)',
+                fontFamily: 'var(--label)',
+                height: '48px',
+                padding: '0 24px',
+                fontSize: '14.5px',
+              }}
             >
               About Flame Head
             </a>
             <a
               href="#services"
               className="btn btn-o"
-              style={{ color: 'var(--canvas)', borderColor: 'var(--canvas)' }}
+              style={{
+                color: 'var(--canvas)',
+                borderColor: 'var(--canvas)',
+                fontFamily: 'var(--label)',
+                height: '48px',
+                padding: '0 24px',
+                fontSize: '14.5px',
+              }}
             >
-              Services →
+              Services
             </a>
           </div>
         </div>
