@@ -1,37 +1,60 @@
 import React from 'react';
+import TechText from './TechText';
 
 export default function ShowcaseTransition() {
   return (
     <section
-      id="showcase"
-      className="show relative py-28 md:py-36 overflow-hidden border-b border-[#141414]/20 transition-all duration-300"
-      style={{
-        backgroundImage: 'linear-gradient(180deg, #FDA83A 0%, #F89A33 35%, #F36F21 70%, #FDA83A 100%)',
-      }}
+      id="showcase-cover"
+      className="relative min-h-[80vh] md:h-[80vh] w-full flex flex-col justify-between overflow-hidden bg-[#FDA83A] text-[#141414] px-[var(--px)] pt-8 md:pt-10 pb-2"
     >
-      <div className="wrap text-[#141414] flex flex-col justify-between items-center text-center gap-12">
-        <h2
-          className="text-6xl sm:text-8xl lg:text-[100px] font-bold uppercase tracking-tight text-[#E5372A]"
-          style={{ fontFamily: 'var(--title)' }}
-        >
-          Showcase
-        </h2>
+      {/* Background layer ready for interactive background element */}
+      <div
+        id="showcase-interactive-bg"
+        className="absolute inset-0 pointer-events-none z-0"
+        aria-hidden="true"
+      />
 
+      {/* Top Area: Right-aligned 2-line statement matching mockup */}
+      <div className="relative z-10 w-full flex justify-end pt-1 md:pt-2">
         <p
-          className="max-w-2xl text-xl sm:text-3xl font-semibold tracking-[-0.02em] leading-snug"
-          style={{ fontFamily: 'var(--text)' }}
+          className="text-right text-[#141414] font-normal leading-[1.35] max-w-2xl"
+          style={{
+            fontFamily: 'var(--text)',
+            fontSize: 'clamp(18px, 1.8vw, 26px)',
+            letterSpacing: '-0.01em',
+          }}
         >
-          A few ideas that made it out of the sketchbook and into the world through us.
+          <span className="block">A few ideas that made it out of the</span>
+          <span className="block">sketchbook and into the world through us</span>
         </p>
+      </div>
 
-        {/* Animated Down indicator */}
-        <div className="flex flex-col items-center gap-2 pt-6">
-          <span className="font-mono text-xs uppercase tracking-widest text-[#141414]/80">
-            Scroll to explore
-          </span>
-          <span className="text-2xl animate-bounce text-[#141414]">
-            ▼
-          </span>
+      {/* Bottom Area: Large Interactive TechText Showcase title with full canvas headroom */}
+      <div className="relative z-10 w-full flex-1 flex flex-col justify-end -mx-[var(--px)] mt-2">
+        <div className="w-full h-[320px] md:h-[380px] lg:h-[440px] relative">
+          <TechText
+            text="Showcase"
+            fontFamily="LT Wave UI"
+            fontWeight={700}
+            fontSize={150}
+            letterSpacing={-0.03}
+            align="left"
+            verticalAlign="bottom"
+            paddingBottom={24}
+            margin="gutter"
+            color="#e5372a"
+            accentColor="#141414"
+            reveal="letter"
+            dashLength={4}
+            dashGap={2}
+            specks={15}
+            intro="metrics"
+            introDuration={1.8}
+            clickKick
+            draggable
+            guides={false}
+            sweep
+          />
         </div>
       </div>
     </section>

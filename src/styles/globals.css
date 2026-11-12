@@ -46,13 +46,13 @@
 
 html {
   scroll-behavior: smooth;
-  background: var(--canvas);
+  background-color: #141414 !important;
 }
 
 body {
   font: 400 16px/1.5 var(--text);
   color: var(--ink);
-  background: var(--canvas);
+  background-color: #141414 !important;
   -webkit-font-smoothing: antialiased;
   overflow-x: hidden;
 }
@@ -180,9 +180,17 @@ img, svg {
   transition: transform var(--ease);
 }
 
-/* header - slimmed down to 72px */
+/* header - slimmed down to 72px & semi-transparent over hero */
 header {
   height: 72px;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 30;
+  background: rgba(20, 20, 20, 0.4);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
 }
 header .wrap {
   height: 72px;
@@ -196,7 +204,7 @@ header .wrap:after {
   left: var(--px);
   right: var(--px);
   bottom: 0;
-  border-top: 1px solid rgba(255, 244, 232, 0.22);
+  border-top: 1px solid rgba(255, 244, 232, 0.18);
 }
 .logo {
   display: flex;
@@ -290,8 +298,8 @@ header .wrap:after {
 
 /* hero styles with 60% / 40% proportional split */
 .hero {
-  background: radial-gradient(circle, rgba(255, 244, 232, 0.12) 1px, rgba(20, 20, 20, 0) 1.5px) 0 0/28px 28px, var(--canvas);
-  min-height: calc(100vh - 72px);
+  background: var(--canvas);
+  min-height: 100vh;
   display: flex;
   flex-direction: column;
 }
@@ -300,7 +308,7 @@ header .wrap:after {
   flex-direction: column;
   justify-content: space-between;
   flex: 1;
-  padding-top: 24px;
+  padding-top: 96px;
   padding-bottom: 16px;
   width: 100%;
 }

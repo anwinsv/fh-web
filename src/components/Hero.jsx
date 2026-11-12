@@ -1,5 +1,7 @@
 import React, { useRef, useState } from 'react';
 import mascotSvg from '../assets/images/fh_mascot.svg';
+import MagnetLines from './MagnetLines';
+import GradientText from './GradientText';
 
 export default function Hero() {
   const tiltRef = useRef(null);
@@ -23,8 +25,24 @@ export default function Hero() {
   };
 
   return (
-    <section className="hero" onPointerMove={handlePointerMove} onPointerLeave={handlePointerLeave}>
-      <div className="wrap">
+    <section className="hero relative overflow-hidden" onPointerMove={handlePointerMove} onPointerLeave={handlePointerLeave}>
+      {/* Full-screen MagnetLines Interactive Background */}
+      <div className="absolute inset-0 pointer-events-none z-0 overflow-hidden" aria-hidden="true">
+        <MagnetLines
+          lineColor="#efefef"
+          accentColor="#E5372A"
+          spacing={32}
+          lineWidth={2}
+          lineHeight={18}
+          mode="orbit"
+          shape="line"
+          radius={220}
+          fade={0.7}
+          style={{ opacity: 0.35 }}
+        />
+      </div>
+
+      <div className="wrap relative z-10">
         {/* Main Hero Grid: 60% Title Section / 40% Placeholder & Content Section */}
         <div className="hero-grid">
           {/* Left Column (60%): 2-line title scaled up & tagline strictly right-aligned */}
@@ -32,7 +50,17 @@ export default function Hero() {
             <h1 className="disp">
               <span>one spark away</span>
               <span>
-                from <em>extraordinary</em>
+                from{' '}
+                <em className="not-italic">
+                  <GradientText
+                    colors={["#d83b39", "#fb8323", "#d71426"]}
+                    animationSpeed={4}
+                    variant="flow"
+                    glow={0.25}
+                  >
+                    extraordinary
+                  </GradientText>
+                </em>
               </span>
             </h1>
             <div className="tag">
