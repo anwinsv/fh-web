@@ -409,7 +409,7 @@ header .wrap:after {
 }
 
 .intro {
-  background: var(--ink);
+  background: radial-gradient(circle, rgba(20, 20, 20, 0.11) 1px, rgba(255, 244, 232, 0) 1.5px) 0 0/28px 28px, var(--ink);
   color: var(--canvas);
   min-height: 100vh;
   display: flex;

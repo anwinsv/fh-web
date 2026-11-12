@@ -41,7 +41,7 @@ export default function Hero() {
           colorStops={["#d71426", "#f36f21", "#d71426"]}
           amplitude={0.55}
           blend={0.35}
-          height={0.3}
+          height={0.2}
           speed={1.15}
           glow={0.2}
           direction="bottom"
@@ -61,10 +61,11 @@ export default function Hero() {
                 from{' '}
                 <em className="not-italic">
                   <GradientText
-                    colors={["#d83b39", "#fb8323", "#d71426"]}
+                    colors={["#d71426", "#fb8323", "#005e88", "#d71426", "#f36f21"]}
                     animationSpeed={4}
                     variant="flow"
                     glow={0.25}
+                    pauseOnHover
                   >
                     extraordinary
                   </GradientText>

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import Lenis from 'lenis';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import Header from './components/Header';
 import MenuOverlay from './components/MenuOverlay';
 import Hero from './components/Hero';
@@ -20,6 +21,8 @@ export default function App() {
       easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
       smoothWheel: true,
     });
+
+    lenis.on('scroll', ScrollTrigger.update);
 
     let animationFrameId;
     function raf(time) {

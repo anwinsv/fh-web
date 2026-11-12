@@ -1,4 +1,6 @@
 import React from 'react';
+import ScrollFloat from './ScrollFloat';
+import introSparkImg from '../assets/images/intro_spark.jpg';
 
 export default function Introduction() {
   return (
@@ -12,70 +14,87 @@ export default function Introduction() {
           </div>
         </div>
 
-        {/* Upper breathing space to offset placeholder, heading, and description downward */}
-        <div className="flex-[1.8] min-h-[48px] max-h-[200px]" />
+        {/* Middle Content: Fills the space evenly between the top and bottom lines */}
+        <div className="flex-1 flex items-center justify-center py-6 md:py-10 lg:py-14 w-full my-auto">
+          <div className="grid grid-cols-1 lg:grid-cols-[auto_1fr] gap-6 lg:gap-8 items-center w-full">
+            {/* Left Column: Landscape Image - Enlarged */}
+            <div className="flex justify-center lg:justify-start w-full lg:w-auto flex-shrink-0">
+              <div className="w-full sm:w-[500px] md:w-[560px] lg:w-[580px] xl:w-[640px] aspect-[3/2] overflow-hidden bg-black select-none shadow-xl">
+                <img
+                  src={introSparkImg}
+                  alt="Igniting spark from lighter"
+                  className="w-full h-full object-cover object-center"
+                />
+              </div>
+            </div>
 
-        {/* Middle Content Grid: 50% Placeholder Left / 50% Text Content Right */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-14 items-center w-full">
-          {/* Left Column (50%): Clean Square Placeholder Box */}
-          <div className="flex justify-center items-center w-full">
-            <div
-              className="ph select-none shadow-sm"
-              aria-hidden="true"
-              style={{
-                width: 'min(290px, 80%)',
-                aspectRatio: '1',
-                background: '#c8d1d9',
-                color: '#141414',
-                display: 'grid',
-                placeItems: 'center',
-                fontFamily: 'var(--label)',
-                fontSize: '16px',
-                borderRadius: '0px',
-              }}
-            >
-              placeholder
+            {/* Right Column: Extended typography area close to the image */}
+            <div className="flex flex-col w-full text-left justify-center min-w-0">
+              <ScrollFloat
+                as="h2"
+                effect="float"
+                splitBy="chars"
+                direction="up"
+                order="start"
+                fromColor="currentColor"
+                animationDuration={1}
+                ease="back.inOut(2)"
+                scrollStart="center bottom+=50%"
+                scrollEnd="bottom bottom-=40%"
+                stagger={0.03}
+                distance={120}
+                stretch={2}
+                smoothing={0}
+                containerClassName="font-bold text-[#F36F21] w-full"
+                style={{
+                  fontFamily: 'var(--text)',
+                  fontSize: 'clamp(26px, 2.7vw, 44px)',
+                  lineHeight: 1.15,
+                  letterSpacing: '-0.01em',
+                  whiteSpace: 'nowrap',
+                  color: '#F36F21',
+                  textAlign: 'left',
+                  display: 'block',
+                  width: '100%',
+                }}
+              >
+                Not every spark needs a matchstick.
+              </ScrollFloat>
+
+              <ScrollFloat
+                as="p"
+                effect="float"
+                splitBy="words"
+                direction="up"
+                order="start"
+                fromColor="currentColor"
+                animationDuration={1}
+                ease="back.inOut(2)"
+                scrollStart="center bottom+=45%"
+                scrollEnd="bottom bottom-=35%"
+                stagger={0.02}
+                distance={80}
+                stretch={1.6}
+                smoothing={0}
+                containerClassName="mt-4 md:mt-5 text-[#141414] w-full"
+                style={{
+                  fontFamily: 'var(--text)',
+                  fontWeight: 500,
+                  fontSize: 'clamp(19px, 1.95vw, 27px)',
+                  lineHeight: 1.48,
+                  letterSpacing: '-0.01em',
+                  color: '#141414',
+                  textAlign: 'left',
+                  whiteSpace: 'pre-line',
+                  display: 'block',
+                  width: '100%',
+                }}
+              >
+                {`Sometimes, all it needs is a good idea and\nsomeone willing to run with it.\nThat's where we come in. We work with\npeople and businesses to give their ideas\na visual identity, a little personality and a\nreason to be remembered.`}
+              </ScrollFloat>
             </div>
           </div>
-
-          {/* Right Column (50%): Single-line heading and 6-line description matching mockup */}
-          <div className="flex flex-col w-full max-w-2xl">
-            <h2
-              className="font-bold text-[#F36F21]"
-              style={{
-                fontFamily: 'var(--text)',
-                fontSize: 'clamp(26px, 2.6vw, 38px)',
-                lineHeight: 1.15,
-                letterSpacing: '-0.01em',
-                whiteSpace: 'nowrap',
-              }}
-            >
-              Not every spark needs a matchstick.
-            </h2>
-
-            {/* Description scaled up to match the mockup's 6 lines with rich medium weight */}
-            <p
-              className="mt-2.5 text-[#141414]"
-              style={{
-                fontFamily: 'var(--text)',
-                fontWeight: 500,
-                fontSize: 'clamp(21px, 2.1vw, 29px)',
-                lineHeight: 1.4,
-                letterSpacing: '-0.01em',
-              }}
-            >
-              Sometimes, all it needs is a good idea and<br className="hidden md:inline" />
-              {' '}someone willing to run with it.<br className="hidden md:inline" />
-              That's where we come in. We work with<br className="hidden md:inline" />
-              {' '}people and businesses to give their ideas<br className="hidden md:inline" />
-              {' '}a visual identity, a little personality and a<br className="hidden md:inline" />
-              {' '}reason to be remembered.
-            </p>
-          </div>
         </div>
-
-        {/* Lower breathing space leading down into the bottom divider line */}
-        <div className="flex-1 min-h-[32px] max-h-[80px]" />
 
         {/* Bottom Section: 50% Studio Metadata Left / 50% Action Buttons Right */}
         <div className="bot border-t border-[#c9bfb4] pt-8 pb-4 md:pb-6 grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-14 items-end w-full">
