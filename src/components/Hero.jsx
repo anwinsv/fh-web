@@ -1,6 +1,6 @@
 import React, { useRef, useState } from 'react';
 import mascotSvg from '../assets/images/fh_mascot.svg';
-import MagnetLines from './MagnetLines';
+import Aurora from './Aurora';
 import GradientText from './GradientText';
 
 export default function Hero() {
@@ -25,20 +25,28 @@ export default function Hero() {
   };
 
   return (
-    <section className="hero relative overflow-hidden" onPointerMove={handlePointerMove} onPointerLeave={handlePointerLeave}>
-      {/* Full-screen MagnetLines Interactive Background */}
-      <div className="absolute inset-0 pointer-events-none z-0 overflow-hidden" aria-hidden="true">
-        <MagnetLines
-          lineColor="#efefef"
-          accentColor="#E5372A"
-          spacing={32}
-          lineWidth={2}
-          lineHeight={18}
-          mode="orbit"
-          shape="line"
-          radius={220}
-          fade={0.7}
-          style={{ opacity: 0.35 }}
+    <section
+      className="hero relative overflow-hidden bg-[#141414]"
+      style={{ backgroundColor: '#141414' }}
+      onPointerMove={handlePointerMove}
+      onPointerLeave={handlePointerLeave}
+    >
+      {/* Full-screen Aurora Background */}
+      <div
+        className="absolute inset-0 pointer-events-none z-0 overflow-hidden bg-[#141414]"
+        style={{ backgroundColor: '#141414' }}
+        aria-hidden="true"
+      >
+        <Aurora
+          colorStops={["#d71426", "#f36f21", "#d71426"]}
+          amplitude={0.85}
+          blend={0.4}
+          height={0.5}
+          speed={1.15}
+          glow={0.45}
+          direction="bottom"
+          scale={0.75}
+          brightness={0.6}
         />
       </div>
 
