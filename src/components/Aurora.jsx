@@ -225,7 +225,7 @@ const Aurora = ({
   blend = 0.5,
   speed = 1,
   time,
-  height = 0.45,
+  height = 0.3,
   scale = 1,
   glow = 0.6,
   brightness = 1,
@@ -480,7 +480,6 @@ const Aurora = ({
       gl.deleteProgram(program.program);
       gl.deleteBuffer(buffer);
       gl.deleteVertexArray(vao);
-      gl.getExtension('WEBGL_lose_context')?.loseContext();
     };
   }, []);
 

@@ -39,11 +39,11 @@ export default function Hero() {
       >
         <Aurora
           colorStops={["#d71426", "#f36f21", "#d71426"]}
-          amplitude={0.85}
-          blend={0.4}
-          height={0.5}
+          amplitude={0.55}
+          blend={0.35}
+          height={0.3}
           speed={1.15}
-          glow={0.45}
+          glow={0.2}
           direction="bottom"
           scale={0.75}
           brightness={0.6}
