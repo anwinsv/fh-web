@@ -121,7 +121,7 @@ img, svg {
   height: 52px;
   padding: 0 24px;
   border: 0;
-  border-radius: 0;
+  border-radius: 9999px;
   cursor: pointer;
   font: 500 15px/1.55 var(--label);
   transition: transform var(--ease), background-color var(--ease), color var(--ease), border-color var(--ease);
@@ -180,31 +180,59 @@ img, svg {
   transition: transform var(--ease);
 }
 
-/* header - slimmed down to 72px & semi-transparent over hero */
-header {
-  height: 72px;
-  position: absolute;
-  top: 0;
+/* header - floating pill navigation bar */
+header#top {
+  height: auto;
+  position: fixed;
+  top: 14px;
   left: 0;
   right: 0;
-  z-index: 30;
-  background: rgba(20, 20, 20, 0.4);
-  backdrop-filter: blur(4px);
-  -webkit-backdrop-filter: blur(4px);
+  z-index: 50;
+  pointer-events: none;
+  background: none;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  border: none;
 }
-header .wrap {
-  height: 72px;
+header#top .wrap {
+  height: auto;
+  display: block;
+  padding: 0;
+}
+header#top .wrap:after {
+  display: none;
+}
+
+.pill-bar {
+  background: rgba(20, 20, 20, 0.85);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 244, 232, 0.2);
+  border-radius: 9999px;
+  box-shadow: 0 12px 32px -4px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(255, 244, 232, 0.08);
+}
+.pill-bar .logo {
   display: flex;
   align-items: center;
-  gap: 20px;
+  gap: 12px;
 }
-header .wrap:after {
-  content: "";
-  position: absolute;
-  left: var(--px);
-  right: var(--px);
-  bottom: 0;
-  border-top: 1px solid rgba(255, 244, 232, 0.18);
+.pill-bar .hr {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+.pill-bar .hr .btn {
+  height: 38px;
+  padding: 0 18px;
+  font-size: 13.5px;
+  border-radius: 9999px;
+  min-width: auto;
+  white-space: nowrap;
+}
+.pill-bar .burger {
+  width: 38px;
+  height: 38px;
 }
 .logo {
   display: flex;
@@ -409,7 +437,7 @@ header .wrap:after {
 }
 
 .intro {
-  background: radial-gradient(circle, rgba(20, 20, 20, 0.11) 1px, rgba(255, 244, 232, 0) 1.5px) 0 0/28px 28px, var(--ink);
+  background: radial-gradient(circle, #99938b 1px, rgba(255, 244, 232, 0) 1.5px) 0 0/28px 28px, var(--ink);
   color: var(--canvas);
   min-height: 100vh;
   display: flex;
@@ -522,4 +550,9 @@ header .wrap:after {
   height: 48px;
   padding: 0 24px;
   font-size: 14.5px;
+}
+
+/* Process Section */
+.proc {
+  background: radial-gradient(circle, rgba(255, 244, 232, 0.12) 1px, rgba(20, 20, 20, 0) 1.5px) 0 0/28px 28px, var(--canvas);
 }

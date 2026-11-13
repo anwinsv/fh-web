@@ -69,7 +69,7 @@ export default function BrandShowcase() {
                   key={b.num}
                   type="button"
                   onClick={() => setSelectedBrand(i)}
-                  className={`flex items-center gap-2 px-3 py-1.5 border transition-all duration-200 cursor-pointer ${
+                  className={`flex items-center gap-2 px-3 py-1.5 border rounded-full transition-all duration-200 cursor-pointer ${
                     isActive
                       ? 'border-[#FDA83A] bg-[#2A2522] text-[#FFF4E8] translate-x-1'
                       : 'border-[#2A2522] text-[#827970] hover:text-[#FFF4E8] hover:border-[#FFF4E8]/40'
@@ -118,7 +118,7 @@ export default function BrandShowcase() {
             {/* Explore Button with kinetic fill hover effect */}
             <a
               href="#contact"
-              className="group relative inline-flex items-center gap-3 px-8 h-14 border border-[#E5372A] text-[#FFF4E8] font-mono text-sm tracking-wider uppercase overflow-hidden cursor-pointer transition-colors duration-300"
+              className="group relative inline-flex items-center gap-3 px-8 h-14 border border-[#E5372A] text-[#FFF4E8] font-mono text-sm tracking-wider uppercase overflow-hidden cursor-pointer transition-colors duration-300 rounded-full"
             >
               <span className="absolute inset-0 bg-[#E5372A] translate-y-full group-hover:translate-y-0 transition-transform duration-300 ease-out z-0" />
               <span className="relative z-10 font-medium">Explore Project</span>

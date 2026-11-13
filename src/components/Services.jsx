@@ -115,7 +115,7 @@ export default function Services() {
                 key={s.num}
                 type="button"
                 onClick={() => setActiveIndex(idx)}
-                className={`px-4 py-2 border font-mono text-sm tracking-wider uppercase transition-all duration-200 cursor-pointer ${
+                className={`px-4 py-2 border rounded-full font-mono text-sm tracking-wider uppercase transition-all duration-200 cursor-pointer ${
                   idx === activeIndex
                     ? 'border-[#E5372A] bg-[#141414] text-[#FFF4E8]'
                     : 'border-[#c9bfb4] bg-transparent text-[#7A7067] hover:border-[#141414]'

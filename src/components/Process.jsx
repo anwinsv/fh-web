@@ -89,7 +89,7 @@ export default function Process() {
     <section
       id="process"
       ref={containerRef}
-      className="proc bg-[#141414] text-[#FFF4E8] relative"
+      className="proc text-[#FFF4E8] relative"
       style={{ height: '320vh' }}
     >
       {/* Sticky Fullscreen Viewport */}
