@@ -1,8 +1,98 @@
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
+import { gsap } from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import ScrollFloat from './ScrollFloat';
+import TiltedCard, { TiltedCardLayer } from './TiltedCard';
 import introSparkImg from '../assets/images/intro_spark.jpg';
 
+gsap.registerPlugin(ScrollTrigger);
+
 export default function Introduction() {
+  const botRef = useRef(null);
+  const imageWrapperRef = useRef(null);
+  const imageRef = useRef(null);
+
+  useEffect(() => {
+    const el = botRef.current;
+    const imgWrapper = imageWrapperRef.current;
+    const imgEl = imageRef.current;
+    if (!el && !imgEl) return;
+
+    const mm = gsap.matchMedia();
+    mm.add('(prefers-reduced-motion: no-preference)', () => {
+      // 1. Bottom metadata & buttons intro/outro
+      if (el) {
+        const targets = el.querySelectorAll('.bot-item');
+        if (targets.length) {
+          const tl = gsap.timeline({
+            scrollTrigger: {
+              trigger: el,
+              start: 'top 95%',
+              end: 'bottom top',
+              scrub: true,
+              invalidateOnRefresh: true,
+            },
+          });
+
+          gsap.set(targets, { willChange: 'opacity, transform' });
+
+          // Intro phase: rises smoothly into in-line position
+          tl.fromTo(
+            targets,
+            { opacity: 0, yPercent: 60, scaleY: 1.3, transformOrigin: '50% 0%' },
+            { opacity: 1, yPercent: 0, scaleY: 1, duration: 0.8, stagger: 0.04, ease: 'back.inOut(2)' },
+            0
+          );
+
+          // Hold phase: remains fully in-line, readable, and clickable while on page
+          tl.to({}, { duration: 2.4 });
+
+          // Outro phase: floats up and out as user scrolls down and leaves the page
+          tl.to(targets, {
+            opacity: 0,
+            yPercent: -60,
+            scaleY: 1.3,
+            transformOrigin: '50% 100%',
+            duration: 0.8,
+            stagger: 0.04,
+            ease: 'back.inOut(2)',
+          });
+        }
+      }
+
+      // 2. Image outro timeline (intro animation removed per user request)
+      if (imgEl && imgWrapper) {
+        const imgTl = gsap.timeline({
+          scrollTrigger: {
+            trigger: imgWrapper,
+            start: 'top 85%',
+            end: 'bottom top',
+            scrub: true,
+            invalidateOnRefresh: true,
+          },
+        });
+
+        gsap.set(imgEl, { willChange: 'opacity, transform' });
+
+        // Hold phase while section is visible (stable, no intro animation)
+        imgTl.to({}, { duration: 2.8 });
+
+        // Outro phase: floats up, stretches subtly, and fades out when scrolling past
+        imgTl.to(imgEl, {
+          opacity: 0,
+          yPercent: -40,
+          scaleY: 1.15,
+          scaleX: 0.95,
+          transformOrigin: '50% 100%',
+          duration: 0.8,
+          ease: 'back.inOut(2)',
+        });
+      }
+    });
+
+    return () => mm.revert();
+  }, []);
+
   return (
     <section id="about" className="intro light min-h-screen flex flex-col justify-between">
       <div className="wrap flex flex-col justify-between flex-1 min-h-screen py-6 md:py-8 w-full">
@@ -17,14 +107,48 @@ export default function Introduction() {
         {/* Middle Content: Fills the space evenly between the top and bottom lines */}
         <div className="flex-1 flex items-center justify-center py-6 md:py-10 lg:py-14 w-full my-auto">
           <div className="grid grid-cols-1 lg:grid-cols-[auto_1fr] gap-6 lg:gap-8 items-center w-full">
-            {/* Left Column: Landscape Image - Enlarged */}
-            <div className="flex justify-center lg:justify-start w-full lg:w-auto flex-shrink-0">
-              <div className="w-full sm:w-[500px] md:w-[560px] lg:w-[580px] xl:w-[640px] aspect-[3/2] overflow-hidden bg-black select-none shadow-xl">
-                <img
-                  src={introSparkImg}
-                  alt="Igniting spark from lighter"
-                  className="w-full h-full object-cover object-center"
-                />
+            {/* Left Column: Landscape Image with TiltedCard 3D Interactive Effect */}
+            <div ref={imageWrapperRef} className="flex justify-center lg:justify-start w-full lg:w-auto flex-shrink-0">
+              <div
+                ref={imageRef}
+                className="w-full sm:w-[500px] md:w-[560px] lg:w-[580px] xl:w-[640px] aspect-[3/2] select-none"
+              >
+                <TiltedCard
+                  imageSrc={introSparkImg}
+                  altText="Spark to Flame - Igniting spark from lighter"
+                  containerWidth="100%"
+                  containerHeight="100%"
+                  imageWidth="100%"
+                  imageHeight="100%"
+                  rotateAmplitude={12}
+                  scaleOnHover={1.05}
+                  glare={0.4}
+                  shadow={0.5}
+                  radius={0}
+                  intro={true}
+                  showTooltip={false}
+                >
+                  <TiltedCardLayer depth={32}>
+                    <div
+                      className="absolute left-4 bottom-4 sm:left-6 sm:bottom-5 pointer-events-none select-none z-10"
+                      style={{
+                        color: '#FFFFFF',
+                        fontFamily: 'var(--label)',
+                      }}
+                    >
+                      <span
+                        className="text-xs sm:text-sm font-mono tracking-wider font-medium"
+                        style={{
+                          color: '#FFFFFF',
+                          fontFamily: 'var(--label)',
+                          textShadow: '0 2px 6px rgba(0,0,0,0.85)',
+                        }}
+                      >
+                        Spark to flame
+                      </span>
+                    </div>
+                  </TiltedCardLayer>
+                </TiltedCard>
               </div>
             </div>
 
@@ -36,15 +160,17 @@ export default function Introduction() {
                 splitBy="chars"
                 direction="up"
                 order="start"
-                fromColor="currentColor"
+                outro={true}
+                outroDirection="up"
+                scrollStart="top 85%"
+                scrollEnd="bottom top"
                 animationDuration={1}
                 ease="back.inOut(2)"
-                scrollStart="center bottom+=50%"
-                scrollEnd="bottom bottom-=40%"
                 stagger={0.03}
                 distance={120}
                 stretch={2}
                 smoothing={0}
+                hold={3.5}
                 containerClassName="font-bold text-[#F36F21] w-full"
                 style={{
                   fontFamily: 'var(--text)',
@@ -67,15 +193,17 @@ export default function Introduction() {
                 splitBy="words"
                 direction="up"
                 order="start"
-                fromColor="currentColor"
+                outro={true}
+                outroDirection="up"
+                scrollStart="top 85%"
+                scrollEnd="bottom top"
                 animationDuration={1}
                 ease="back.inOut(2)"
-                scrollStart="center bottom+=45%"
-                scrollEnd="bottom bottom-=35%"
                 stagger={0.02}
                 distance={80}
                 stretch={1.6}
                 smoothing={0}
+                hold={3.5}
                 containerClassName="mt-4 md:mt-5 text-[#141414] w-full"
                 style={{
                   fontFamily: 'var(--text)',
@@ -97,10 +225,10 @@ export default function Introduction() {
         </div>
 
         {/* Bottom Section: 50% Studio Metadata Left / 50% Action Buttons Right */}
-        <div className="bot border-t border-[#c9bfb4] pt-8 pb-4 md:pb-6 grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-14 items-end w-full">
+        <div ref={botRef} className="bot border-t border-[#c9bfb4] pt-8 pb-4 md:pb-6 grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-14 items-end w-full">
           {/* Metadata Block on Left (50%) */}
           <div className="meta flex flex-col gap-3">
-            <div>
+            <div className="bot-item">
               <b className="block text-[#141414] text-[16px] leading-tight" style={{ fontFamily: 'var(--text)', fontWeight: 600 }}>
                 Based in
               </b>
@@ -108,7 +236,7 @@ export default function Introduction() {
                 Kerala, India
               </span>
             </div>
-            <div>
+            <div className="bot-item">
               <b className="block text-[#141414] text-[16px] leading-tight" style={{ fontFamily: 'var(--text)', fontWeight: 600 }}>
                 Powered by
               </b>
@@ -120,34 +248,38 @@ export default function Introduction() {
 
           {/* Action Buttons on Right (50%), aligned directly under the right text column */}
           <div className="row flex flex-wrap gap-4 items-center">
-            <a
-              href="#about"
-              className="btn btn-o"
-              style={{
-                color: 'var(--canvas)',
-                borderColor: 'var(--canvas)',
-                fontFamily: 'var(--label)',
-                height: '48px',
-                padding: '0 24px',
-                fontSize: '14.5px',
-              }}
-            >
-              About Flame Head
-            </a>
-            <a
-              href="#services"
-              className="btn btn-o"
-              style={{
-                color: 'var(--canvas)',
-                borderColor: 'var(--canvas)',
-                fontFamily: 'var(--label)',
-                height: '48px',
-                padding: '0 24px',
-                fontSize: '14.5px',
-              }}
-            >
-              Services
-            </a>
+            <div className="bot-item inline-block">
+              <a
+                href="#about"
+                className="btn btn-o"
+                style={{
+                  color: 'var(--canvas)',
+                  borderColor: 'var(--canvas)',
+                  fontFamily: 'var(--label)',
+                  height: '48px',
+                  padding: '0 24px',
+                  fontSize: '14.5px',
+                }}
+              >
+                About Flame Head
+              </a>
+            </div>
+            <div className="bot-item inline-block">
+              <a
+                href="#services"
+                className="btn btn-o"
+                style={{
+                  color: 'var(--canvas)',
+                  borderColor: 'var(--canvas)',
+                  fontFamily: 'var(--label)',
+                  height: '48px',
+                  padding: '0 24px',
+                  fontSize: '14.5px',
+                }}
+              >
+                Services
+              </a>
+            </div>
           </div>
         </div>
       </div>

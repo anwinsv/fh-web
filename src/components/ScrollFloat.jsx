@@ -56,13 +56,18 @@ const ScrollFloat = ({
   fromColor = 'currentColor',
   animationDuration = 1,
   ease = 'back.inOut(2)',
-  scrollStart = 'center bottom+=50%',
-  scrollEnd = 'bottom bottom-=40%',
+  scrollStart,
+  scrollEnd,
   stagger = 0.03,
   distance = 120,
   stretch = 2.3,
   smoothing = 0,
-  style
+  style,
+  outro = false,
+  outroDirection = 'up',
+  outroOrder,
+  outroEase,
+  hold = 1.2
 }) => {
   const containerRef = useRef(null);
   const textRef = useRef(null);
@@ -135,24 +140,48 @@ const ScrollFloat = ({
     const mm = gsap.matchMedia();
 
     mm.add('(prefers-reduced-motion: no-preference)', () => {
+      const defaultStart = outro ? 'top 85%' : 'center bottom+=50%';
+      const defaultEnd = outro ? 'bottom 15%' : 'bottom bottom-=40%';
+      const startPos = scrollStart !== undefined ? scrollStart : defaultStart;
+      const endPos = scrollEnd !== undefined ? scrollEnd : defaultEnd;
+
       const timeline = gsap.timeline({
         scrollTrigger: {
           trigger: el,
           scroller,
-          start: scrollStart,
-          end: clampToScroll(scrollEnd),
+          start: startPos,
+          end: clampToScroll(endPos),
           scrub: smoothing > 0 ? smoothing : true,
           invalidateOnRefresh: true
         }
       });
-      const add = (fromVars, toVars) => {
+
+      const outroDelays = getDelays(targets.length, outroOrder || order, stagger);
+      const outroSign = outroDirection === 'down' ? 1 : -1;
+      const holdTime = Math.max(0.1, Number(hold) || 1.2);
+      const introEndPos = animationDuration + (delays[delays.length - 1] || 0);
+      const outroStartPos = introEndPos + holdTime;
+
+      const add = (fromVars, toVars, outroVars) => {
         gsap.set(targets, { willChange: 'opacity, transform', ...fromVars });
-        return timeline.fromTo(
+        timeline.fromTo(
           targets,
           { willChange: 'opacity, transform', ...fromVars },
           { duration: animationDuration, stagger: index => delays[index] || 0, ...toVars },
           0
         );
+
+        if (outro && outroVars) {
+          timeline.to(
+            targets,
+            {
+              duration: animationDuration,
+              stagger: index => outroDelays[index] || 0,
+              ...outroVars
+            },
+            outroStartPos
+          );
+        }
       };
 
       if (effect === 'flip') {
@@ -161,11 +190,12 @@ const ScrollFloat = ({
             rotationX: -90 * sign,
             transformPerspective: () => size() * 4,
             transformOrigin: () => `50% 50% ${(-size() * 0.55 * reach).toFixed(2)}`,
-            backfaceVisibility: 'hidden'
+            backfaceVisibility: 'hidden',
+            opacity: 0
           },
-          { ease, rotationX: 0 }
+          { ease, rotationX: 0, opacity: 1 },
+          { ease: outroEase || ease, rotationX: 90 * sign * (outroDirection === 'down' ? -1 : 1), opacity: 0 }
         );
-        add({ opacity: 0 }, { ease: p => smoothstep(0.05, 0.55, timing(p)), opacity: 1 });
       } else if (effect === 'scatter') {
         add(
           {
@@ -173,11 +203,19 @@ const ScrollFloat = ({
             y: at(index => sign * (0.35 + random(index, 2)) * size() * 1.1 * reach),
             rotation: at(index => (random(index, 3) < 0.5 ? -1 : 1) * (40 + random(index, 4) * 120)),
             scale: at(index => 0.35 + random(index, 5) * 0.9),
-            transformOrigin: '50% 50%'
+            transformOrigin: '50% 50%',
+            opacity: 0
           },
-          { ease, x: 0, y: 0, rotation: 0, scale: 1 }
+          { ease, x: 0, y: 0, rotation: 0, scale: 1, opacity: 1 },
+          {
+            ease: outroEase || ease,
+            x: at(index => ((random(index, 1) * 2 - 1) * 1.3 - edge(index) * 0.9) * size() * reach),
+            y: at(index => outroSign * (0.35 + random(index, 2)) * size() * 1.1 * reach),
+            rotation: at(index => (random(index, 3) < 0.5 ? -1 : 1) * (40 + random(index, 4) * 120)),
+            scale: at(index => 0.35 + random(index, 5) * 0.9),
+            opacity: 0
+          }
         );
-        add({ opacity: 0 }, { ease: p => smoothstep(0, 0.4, timing(p)), opacity: 1 });
       } else if (effect === 'blur') {
         add(
           {
@@ -188,7 +226,8 @@ const ScrollFloat = ({
             filter: () => `blur(${(size() * 0.2).toFixed(2)}px)`,
             transformOrigin: '50% 50%'
           },
-          { ease, opacity: 1, y: 0, scale: 1, filter: 'blur(0px)' }
+          { ease, opacity: 1, y: 0, scale: 1, filter: 'blur(0px)' },
+          { ease: outroEase || ease, opacity: 0, y: () => outroSign * size() * 0.3 * reach, scale: 1.45, filter: () => `blur(${(size() * 0.2).toFixed(2)}px)` }
         );
       } else if (effect === 'wave') {
         add(
@@ -196,12 +235,13 @@ const ScrollFloat = ({
             yPercent: 120 * reach * sign,
             scaleY: stretch,
             scaleX: squeeze,
-            transformOrigin: sign > 0 ? '50% 100%' : '50% 0%'
+            transformOrigin: sign > 0 ? '50% 100%' : '50% 0%',
+            opacity: 0,
+            rotation: -16 * sign
           },
-          { ease: swell, yPercent: 0, scaleY: 1, scaleX: 1 }
+          { ease: swell, yPercent: 0, scaleY: 1, scaleX: 1, rotation: 0, opacity: 1 },
+          { ease: swell, yPercent: 120 * reach * outroSign, scaleY: stretch, scaleX: squeeze, rotation: 16 * sign, opacity: 0 }
         );
-        add({ rotation: 0 }, { ease: sway, rotation: -16 * sign });
-        add({ opacity: 0 }, { ease: p => clamp01(timing(p) * 2.5), opacity: 1 });
       } else {
         add(
           {
@@ -211,12 +251,32 @@ const ScrollFloat = ({
             scaleX: squeeze,
             transformOrigin: sign > 0 ? '50% 0%' : '50% 100%'
           },
-          { ease, opacity: 1, yPercent: 0, scaleY: 1, scaleX: 1 }
+          { ease, opacity: 1, yPercent: 0, scaleY: 1, scaleX: 1 },
+          {
+            ease: outroEase || ease,
+            opacity: 0,
+            yPercent: 120 * reach * outroSign,
+            scaleY: stretch,
+            scaleX: squeeze,
+            transformOrigin: outroSign > 0 ? '50% 0%' : '50% 100%'
+          }
         );
       }
 
       if (shiftColor) {
-        add({ '--scroll-float-mix': 1 }, { ease: p => smoothstep(0.5, 1, timing(p)), '--scroll-float-mix': 0 });
+        timeline.fromTo(
+          targets,
+          { '--scroll-float-mix': 1 },
+          { ease: p => smoothstep(0.5, 1, timing(p)), '--scroll-float-mix': 0, duration: animationDuration },
+          0
+        );
+        if (outro) {
+          timeline.to(
+            targets,
+            { '--scroll-float-mix': 1, duration: animationDuration },
+            outroStartPos
+          );
+        }
       }
     });
 
@@ -237,7 +297,12 @@ const ScrollFloat = ({
     stagger,
     distance,
     stretch,
-    smoothing
+    smoothing,
+    outro,
+    outroDirection,
+    outroOrder,
+    outroEase,
+    hold
   ]);
 
   return (
